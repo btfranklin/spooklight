@@ -13,3 +13,12 @@ license = {text = "MIT"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.build]
+excludes = ["tests/**"]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.3.2",
+    "flake8>=7.1.1",
+]

@@ -33,6 +33,16 @@ If the `story-length` parameter is not provided, the story will simply continue 
 
 Please note that the only required parameter is the `story-concept` parameter.
 
+## Usage
+
+To execute the tool, simply run the following command:
+
+```bash
+python main.py --story-concept "An unlikely rebellion of oppressed people fighting against a tyrannical council of wizards"
+```
+
+This will generate a story with a single image and narrative, based on the provided story concept.
+
 ## License
 
 Spooklight is released under the [MIT License](LICENSE).

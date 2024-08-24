@@ -32,7 +32,7 @@ def describe_image_at_path(llm_client: OpenAI, image_path: str) -> str:
 def describe_encoded_image(llm_client: OpenAI, base64_encoded_image: bytes) -> str:
 
     structured_prompt = StructuredPrompt.from_package_resource(
-        package="spooklight", resource_name="describe_image.prompt.md"
+        package="spooklight.imageprocessing", resource_name="describe_image.prompt.md"
     )
     messages = structured_prompt.to_chat_completion_messages()
 

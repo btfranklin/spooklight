@@ -4,7 +4,7 @@ import colorama
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from initialize_story import initialize_story
+from spooklight.initialization.initialize_story import initialize_story
 
 
 @click.command()

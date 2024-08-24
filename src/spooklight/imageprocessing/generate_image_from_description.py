@@ -1,11 +1,11 @@
 import requests
-from main import IMAGE_DESCRIPTION_MODEL
+from spooklight.settings import Settings
 
 
 def generate_image_from_description(llm_client, image_description):
 
     response = llm_client.images.generate(
-        model=IMAGE_DESCRIPTION_MODEL,
+        model=Settings.get_generate_image_model(),
         prompt=image_description,
         size="1024x1024",
         quality="hd",

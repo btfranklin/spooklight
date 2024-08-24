@@ -23,7 +23,7 @@ def generate_story(
     # Prep work: initialize colorama
     colorama.init(autoreset=True)
 
-    # 1. Initialize the story
+    # Initialize the story
     story = initialize_story(
         llm_client=llm_client,
         story_concept=story_concept,
@@ -31,16 +31,11 @@ def generate_story(
         starting_image_description=starting_image_description,
     )
 
-    # 2. Main loop for generating the story
+    # Generate the story steps until the story is finished
     while not story_finished(llm_client, story, story_length):
-        # 3. Generate the next image and narrative
-        generate_step(story)
 
-    #     # 4. Save the output
-    #     save_output(step, image_path, narrative)
+        # Generate the next image and narrative
+        generate_step(llm_client, story)
 
-    #     # 5. Update the story state
-    #     update_story(story, step, image_path, narrative)
-
-    # 6. Finalize and save the story title
-    # finalize_story(story)
+    # Finalize and save the story title
+    # finalize_story(llm_client, story)

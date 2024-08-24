@@ -24,10 +24,10 @@ The tool has various parameters that can be provided at execution time, which co
 
 - `--starting-image-path`: A string that specifies the path to the image that will be used as the starting point for the story.
 - `--starting-image-description`: A string that will be used as the prompt for the LLM to generate the first image in the story. This image will be used as the starting point for the story. This will be ignored if the `starting-image-path` parameter is provided.
-- `--story-concept`: REQUIRED. A string that provides a summary of the story concept. This will be used throughout the story at every step to provide context and guide the LLM.
+- `--story-concept`: A string that provides a summary of the story concept. This will be used throughout the story at every step to provide context and guide the LLM. If not provided, the tool will use the `starting-image-description` parameter to generate a story concept.
 - `--story-length`: An integer that specifies the length of the story in terms of number of steps. Each "step" is a single image and associated narrative.
 
-If neither the `starting-image-path` nor the `starting-image-description` parameter are provided, the tool will use the story concept to generate an image description, and then use that description to generate the first image in the story.
+If neither the `starting-image-path` nor the `starting-image-description` parameter are provided, the tool will use the story concept to generate an image description, and then use that description to generate the first image in the story. If the story concept has not been provided in this case, the tool will exit with an error.
 
 If the `story-length` parameter is not provided, the story will simply continue until it reaches a natural conclusion, or until the user terminates the tool manually.
 

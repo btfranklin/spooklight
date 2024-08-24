@@ -1,5 +1,5 @@
 class Step:
-    image_path: str
+    image: bytes
     narrative: str
 
 

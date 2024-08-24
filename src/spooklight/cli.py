@@ -1,10 +1,6 @@
 import click
-import os
-import colorama
-from dotenv import load_dotenv
-from openai import OpenAI
 
-from spooklight.initialization.initialize_story import initialize_story
+from spooklight.generate_story import generate_story
 
 
 @click.command()
@@ -34,39 +30,12 @@ def main(starting_image_path, starting_image_description, story_concept, story_l
     The main function for Spooklight. This function initializes the generation process,
     setting up the necessary configurations and kicking off the main generation loop.
     """
-
-    # Prep work: create OpenAI client
-    load_dotenv()
-    llm_client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-
-    # Prep work: initialize colorama
-    colorama.init(autoreset=True)
-
-    # 1. Initialize the story
-    story = initialize_story(
-        llm_client=llm_client,
-        story_concept=story_concept,
+    generate_story(
         starting_image_path=starting_image_path,
         starting_image_description=starting_image_description,
+        story_concept=story_concept,
+        story_length=story_length,
     )
-
-    # 2. Main loop for generating the story
-    # step = 0
-    # while not story_finished(story, step, story_length):
-    #     # 3. Generate the next image and narrative
-    #     image_path, narrative = generate_step(story, step)
-
-    #     # 4. Save the output
-    #     save_output(step, image_path, narrative)
-
-    #     # 5. Update the story state
-    #     update_story(story, step, image_path, narrative)
-
-    #     # Increment step
-    #     step += 1
-
-    # # 6. Finalize and save the story title
-    # finalize_story(story)
 
 
 if __name__ == "__main__":

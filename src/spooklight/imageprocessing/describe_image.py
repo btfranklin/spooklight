@@ -59,6 +59,6 @@ def describe_encoded_image(llm_client: OpenAI, base64_encoded_image: bytes) -> s
     )
 
     image_description = response.choices[0].message.content
-    print(Fore.YELLOW + f"Image description: {image_description}")
+    print(Fore.BLUE + "Image description: " + Fore.YELLOW + image_description)
 
     return image_description

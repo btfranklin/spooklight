@@ -3,10 +3,16 @@ import colorama
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from spooklight.completion.generate_title_from_narrative import (
+    generate_title_from_narrative,
+)
 from spooklight.initialization.initialize_story import initialize_story
+from spooklight.settings import Settings
 from spooklight.stepgeneration.generate_step import generate_step
 from spooklight.completion.story_finished import story_finished
-from spooklight.completion.finalize_story import finalize_story
+from spooklight.completion.build_pdf_from_story_files import (
+    build_pdf_from_story_files,
+)
 
 
 def generate_story(
@@ -38,5 +44,13 @@ def generate_story(
         # Generate the next image and narrative
         generate_step(llm_client, story)
 
-    # Finalize and save the story title
-    finalize_story(llm_client, story)
+    # Generate the story title by reading the story narrative
+    story.title = generate_title_from_narrative(llm_client, story)
+
+    # Save the title to a file in the output directory with a name like "title.txt"
+    output_dir = Settings.get_output_directory()
+    with open(f"{output_dir}/title.txt", "w") as f:
+        f.write(story.title)
+
+    # Generate a PDF from the text and image files in the output directory
+    build_pdf_from_story_files(story)

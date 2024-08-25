@@ -1,11 +1,11 @@
 import base64
-from email.mime import image
 
 from colorama import Back, Fore
 from promptdown import StructuredPrompt
 from typing import Any
 from openai import OpenAI
-from settings import Settings
+
+from spooklight.settings import Settings
 
 
 def encode_bytes_to_base64(data: bytes) -> str:
@@ -46,7 +46,7 @@ def describe_encoded_image(llm_client: OpenAI, base64_encoded_image: bytes) -> s
         last_message_content.append(
             {
                 "type": "image_url",
-                "image_url": {"url": f"data:image/jpeg;base64,{base64_encoded_image}"},
+                "image_url": {"url": f"data:image/png;base64,{base64_encoded_image}"},
             }
         )
         messages[-1]["content"] = last_message_content

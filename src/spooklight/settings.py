@@ -10,6 +10,7 @@ class Settings:
     __generate_next_image_description_model: str = "chatgpt-4o-latest"
     __generate_image_model: str = "dall-e-3"
     __generate_next_narrative_model: str = "chatgpt-4o-latest"
+    __generate_title_model: str = "chatgpt-4o-latest"
 
     # Read/Write Accessors
     @classmethod
@@ -44,3 +45,7 @@ class Settings:
     @classmethod
     def get_generate_next_narrative_model(cls) -> str:
         return cls.__generate_next_narrative_model
+
+    @classmethod
+    def get_generate_title_model(cls) -> str:
+        return cls.__generate_title_model

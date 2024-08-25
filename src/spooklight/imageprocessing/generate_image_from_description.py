@@ -1,5 +1,6 @@
 from colorama import Back, Fore
 import requests
+from spooklight.imageprocessing.reencode_image import reencode_image
 from spooklight.settings import Settings
 
 
@@ -29,5 +30,9 @@ def generate_image_from_description(llm_client, image_description):
             Fore.RED
             + f"Failed to download the file. Status code: {response.status_code}"
         )
+
+    # Re-encode the image to PNG format
+    print(Fore.BLUE + "Re-encoding image to PNG format")
+    image = reencode_image(image, target_format="PNG")
 
     return image

@@ -6,6 +6,7 @@ from openai import OpenAI
 from spooklight.initialization.initialize_story import initialize_story
 from spooklight.stepgeneration.generate_step import generate_step
 from spooklight.completion.story_finished import story_finished
+from spooklight.completion.finalize_story import finalize_story
 
 
 def generate_story(
@@ -38,4 +39,4 @@ def generate_story(
         generate_step(llm_client, story)
 
     # Finalize and save the story title
-    # finalize_story(llm_client, story)
+    finalize_story(llm_client, story)

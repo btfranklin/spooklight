@@ -2,7 +2,10 @@ from colorama import Back, Fore
 from openai import OpenAI
 from promptdown import StructuredPrompt
 
-from spooklight.imageprocessing.describe_image import describe_image
+from spooklight.imageprocessing.describe_image import (
+    describe_encoded_image,
+    encode_bytes_to_base64,
+)
 from spooklight.model import Story
 from spooklight.settings import Settings
 
@@ -15,7 +18,8 @@ def generate_next_narrative(llm_client: OpenAI, story: Story, next_image: bytes)
     print(Back.MAGENTA + "GENERATING NEXT NARRATIVE")
 
     # Generate the image description from the next image
-    image_description = describe_image(llm_client, next_image)
+    encoded_image = encode_bytes_to_base64(next_image)
+    image_description = describe_encoded_image(llm_client, encoded_image)
 
     # Loop through the story steps and concatenate the narratives
     story_narrative = ""

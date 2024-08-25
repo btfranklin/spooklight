@@ -1,6 +1,6 @@
 from openai import OpenAI
 from model import Story
-from colorama import Fore
+from colorama import Back, Fore
 
 from spooklight.initialization.enhance_story_concept import (
     enhance_story_concept,
@@ -24,15 +24,22 @@ def initialize_story(
     If neither the `starting-image-path` nor the `starting-image-description` parameter are provided, the tool will use the story concept to generate an image description, and then use that description to generate the first image in the story. If the story concept has not been provided in this case, the tool will exit with an error.
     """
 
+    print(Back.BLUE + "INITIALIZING STORY")
+
     story = Story()
 
     # Case 1: No story concept provided
     if story_concept is None:
 
         if starting_image_path is not None:
+            print(
+                Fore.YELLOW
+                + f"Generating image description from image path: {starting_image_path}"
+            )
             image_description = describe_image_at_path(llm_client, starting_image_path)
 
         elif starting_image_description is not None:
+            print(Fore.YELLOW + "Using provided image description")
             image_description = starting_image_description
 
         else:
@@ -50,6 +57,8 @@ def initialize_story(
 
     # Case 2: Story concept provided
     else:
+
+        print(Fore.YELLOW + "Using provided story concept")
 
         # Enhance the story concept with an LLM
         story.concept = enhance_story_concept(llm_client, story_concept)

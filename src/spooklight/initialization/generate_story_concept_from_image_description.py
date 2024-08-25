@@ -10,8 +10,7 @@ def generate_story_concept_from_image_description(
     """
     Generate a story concept from an image description.
     """
-    print(Back.BLUE + "GENERATING STORY CONCEPT")
-    print(Fore.BLUE + "Image description: " + Fore.GREEN + image_description)
+    print(Back.BLUE + "GENERATING STORY CONCEPT FROM IMAGE DESCRIPTION")
 
     structured_prompt = StructuredPrompt.from_package_resource(
         package="spooklight.initialization",

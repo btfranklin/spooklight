@@ -1,5 +1,7 @@
 import base64
+from email.mime import image
 
+from colorama import Back, Fore
 from promptdown import StructuredPrompt
 from typing import Any
 from openai import OpenAI
@@ -31,6 +33,8 @@ def describe_image_at_path(llm_client: OpenAI, image_path: str) -> str:
 
 def describe_encoded_image(llm_client: OpenAI, base64_encoded_image: bytes) -> str:
 
+    print(Back.MAGENTA + "DESCRIBING IMAGE")
+
     structured_prompt = StructuredPrompt.from_package_resource(
         package="spooklight.imageprocessing", resource_name="describe_image.prompt.md"
     )
@@ -54,4 +58,7 @@ def describe_encoded_image(llm_client: OpenAI, base64_encoded_image: bytes) -> s
         max_tokens=4096,
     )
 
-    return response.choices[0].message.content
+    image_description = response.choices[0].message.content
+    print(Fore.YELLOW + f"Image description: {image_description}")
+
+    return image_description

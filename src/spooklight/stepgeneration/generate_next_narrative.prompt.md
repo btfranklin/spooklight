@@ -8,7 +8,7 @@ You will also be provided with a description of the next image that will be used
 
 Be as creative, imaginative, and interesting as possible.
 
-Keep the length to about a paragraph.
+Your response should be only one or two paragraphs long.
 
 ## Conversation
 

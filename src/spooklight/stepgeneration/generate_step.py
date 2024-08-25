@@ -1,6 +1,6 @@
 from colorama import Back
 from openai import OpenAI
-from spooklight.model import Story
+from spooklight.model import Step, Story
 from spooklight.imageprocessing.generate_image_from_description import (
     generate_image_from_description,
 )
@@ -25,3 +25,6 @@ def generate_step(llm_client: OpenAI, story: Story) -> None:
 
     # From the image, generate the next narrative
     next_narrative = generate_next_narrative(llm_client, story, next_image)
+
+    step = Step(next_image, next_narrative)
+    story.steps.append(step)

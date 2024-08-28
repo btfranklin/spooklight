@@ -8,9 +8,9 @@ class Settings:
     __generate_story_concept_from_image_description_model: str = "chatgpt-4o-latest"
     __enhance_story_concept_model: str = "chatgpt-4o-latest"
     __describe_image_model: str = "chatgpt-4o-latest"
-    __generate_next_image_description_model: str = "chatgpt-4o-latest"
+    __generate_image_description_model: str = "chatgpt-4o-latest"
     __generate_image_model: str = "dall-e-3"
-    __generate_next_narrative_model: str = "chatgpt-4o-latest"
+    __generate_narrative_model: str = "chatgpt-4o-latest"
     __generate_title_model: str = "chatgpt-4o-latest"
 
     # Read/Write Accessors
@@ -40,16 +40,16 @@ class Settings:
         return cls.__describe_image_model
 
     @classmethod
-    def get_generate_next_image_description_model(cls) -> str:
-        return cls.__generate_next_image_description_model
+    def get_generate_image_description_model(cls) -> str:
+        return cls.__generate_image_description_model
 
     @classmethod
     def get_generate_image_model(cls) -> str:
         return cls.__generate_image_model
 
     @classmethod
-    def get_generate_next_narrative_model(cls) -> str:
-        return cls.__generate_next_narrative_model
+    def get_generate_narrative_model(cls) -> str:
+        return cls.__generate_narrative_model
 
     @classmethod
     def get_generate_title_model(cls) -> str:

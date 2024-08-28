@@ -1,19 +1,14 @@
 import os
 from colorama import Back, Fore
-from openai import OpenAI
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Image, Spacer
 from reportlab.lib.units import inch
 
-from spooklight.model import Story
 from spooklight.settings import Settings
 
 
-def build_pdf_from_story_files(
-    llm_client: OpenAI,
-    story: Story,
-) -> None:
+def build_pdf_from_story_files() -> None:
     """
     Generate a PDF from the text and image files in the output directory.
     """
@@ -63,4 +58,4 @@ def build_pdf_from_story_files(
     # Build the PDF
     pdf.build(story_flow)
 
-    print(Back.BLUE + f"Story saved to {output_file}")
+    print(Fore.BLUE + f"Story saved to {output_file}")

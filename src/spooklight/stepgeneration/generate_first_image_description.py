@@ -6,12 +6,12 @@ from spooklight.model import Story
 from spooklight.settings import Settings
 
 
-def generate_next_image_description(llm_client: OpenAI, story: Story) -> str:
+def generate_first_image_description(llm_client: OpenAI, story: Story) -> str:
     """
-    Generate the next image description for the current step.
+    Generate the first image description for the story.
     """
 
-    print(Back.MAGENTA + "GENERATING NEXT IMAGE DESCRIPTION")
+    print(Back.MAGENTA + "GENERATING FIRST IMAGE DESCRIPTION")
 
     # Loop through the story steps and concatenate the narratives
     story_narrative = ""

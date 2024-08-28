@@ -40,7 +40,7 @@ def generate_next_narrative(llm_client: OpenAI, story: Story, next_image: bytes)
     messages = structured_prompt.to_chat_completion_messages()
 
     response = llm_client.chat.completions.create(
-        model=Settings.get_generate_next_narrative_model(),
+        model=Settings.get_generate_narrative_model(),
         messages=messages,
         temperature=1,
     )

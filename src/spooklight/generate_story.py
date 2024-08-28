@@ -8,6 +8,7 @@ from spooklight.completion.generate_title_from_narrative import (
 )
 from spooklight.initialization.initialize_story import initialize_story
 from spooklight.settings import Settings
+from spooklight.stepgeneration.generate_first_step import generate_first_step
 from spooklight.stepgeneration.generate_step import generate_step
 from spooklight.completion.story_finished import story_finished
 from spooklight.completion.build_pdf_from_story_files import (
@@ -38,6 +39,14 @@ def generate_story(
         starting_image_description=starting_image_description,
     )
 
+    # Generate the first story step
+    generate_first_step(
+        llm_client=llm_client,
+        story=story,
+        starting_image_path=starting_image_path,
+        starting_image_description=starting_image_description,
+    )
+
     # Generate the story steps until the story is finished
     while not story_finished(llm_client, story, story_length):
 
@@ -53,4 +62,4 @@ def generate_story(
         f.write(story.title)
 
     # Generate a PDF from the text and image files in the output directory
-    build_pdf_from_story_files(story)
+    build_pdf_from_story_files()

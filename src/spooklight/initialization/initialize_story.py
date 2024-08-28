@@ -1,5 +1,4 @@
 from openai import OpenAI
-from model import Story
 from colorama import Back, Fore
 
 from spooklight.initialization.enhance_story_concept import (
@@ -9,6 +8,7 @@ from spooklight.initialization.generate_story_concept_from_image_description imp
     generate_story_concept_from_image_description,
 )
 from spooklight.imageprocessing.describe_image import describe_image_at_path
+from spooklight.model import Story
 
 
 def initialize_story(

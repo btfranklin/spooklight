@@ -39,6 +39,11 @@ def generate_story(
         starting_image_description=starting_image_description,
     )
 
+    # Save the story concept to a file in the output directory with a name like "concept.txt"
+    output_dir = Settings.get_output_directory()
+    with open(f"{output_dir}/concept.txt", "w") as f:
+        f.write(story.concept)
+
     # Generate the first story step
     generate_first_step(
         llm_client=llm_client,
@@ -57,7 +62,6 @@ def generate_story(
     story.title = generate_title_from_narrative(llm_client, story)
 
     # Save the title to a file in the output directory with a name like "title.txt"
-    output_dir = Settings.get_output_directory()
     with open(f"{output_dir}/title.txt", "w") as f:
         f.write(story.title)
 

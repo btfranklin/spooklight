@@ -1,7 +1,7 @@
 import os
 from colorama import Back, Fore
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Image, Spacer, PageBreak
 from reportlab.lib.units import inch
 

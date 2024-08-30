@@ -1,4 +1,5 @@
 import os
+import shutil
 import colorama
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -39,8 +40,13 @@ def generate_story(
         starting_image_description=starting_image_description,
     )
 
-    # Save the story concept to a file in the output directory with a name like "concept.txt"
+    # Clear out the contents of the output directory, and recreate it
     output_dir = Settings.get_output_directory()
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.makedirs(output_dir)
+
+    # Save the story concept to a file in the output directory with a name like "concept.txt"
     with open(f"{output_dir}/concept.txt", "w") as f:
         f.write(story.concept)
 

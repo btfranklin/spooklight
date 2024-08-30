@@ -22,7 +22,11 @@ def generate_step(llm_client: OpenAI, story: Story) -> None:
     image_description = generate_next_image_description(llm_client, story)
 
     # Generate the next image
-    next_image = generate_image_from_description(llm_client, image_description)
+    next_image = generate_image_from_description(
+        llm_client=llm_client,
+        image_description=image_description,
+        visual_style=story.visual_style,
+    )
 
     # From the image, generate the next narrative
     next_narrative = generate_next_narrative(llm_client, story, next_image)

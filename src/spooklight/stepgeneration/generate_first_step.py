@@ -6,7 +6,11 @@ from spooklight.imageprocessing.generate_image_from_description import (
 )
 from spooklight.imageprocessing.describe_image import (
     describe_image_at_path,
+    describe_visual_style_of_image_at_path,
     read_image,
+)
+from spooklight.imageprocessing.generate_visual_style_from_image_description import (
+    generate_visual_style_from_image_description,
 )
 from spooklight.imageprocessing.reencode_image import reencode_image
 from spooklight.model import Step, Story
@@ -34,18 +38,33 @@ def generate_first_step(
         print(Fore.YELLOW + "Using image at provided path")
         first_image = reencode_image(read_image(starting_image_path))
         image_description = describe_image_at_path(llm_client, starting_image_path)
+        visual_style = describe_visual_style_of_image_at_path(
+            llm_client, starting_image_path
+        )
 
     elif starting_image_description is not None:
         print(Fore.YELLOW + "Using provided image description")
         image_description = starting_image_description
         first_image = generate_image_from_description(llm_client, image_description)
+        visual_style = generate_visual_style_from_image_description(
+            llm_client, image_description
+        )
 
     else:
         # Generate the first image description
         image_description = generate_first_image_description(llm_client, story)
 
+        # Generate a visual style for the image
+        visual_style = generate_visual_style_from_image_description(
+            llm_client, image_description
+        )
+
         # Generate the first image
-        first_image = generate_image_from_description(llm_client, image_description)
+        first_image = generate_image_from_description(
+            llm_client, image_description, visual_style
+        )
+
+    story.visual_style = visual_style
 
     # From the image, generate the first narrative
     first_narrative = generate_first_narrative(llm_client, story, image_description)

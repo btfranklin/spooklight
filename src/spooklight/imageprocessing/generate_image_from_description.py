@@ -4,13 +4,17 @@ from spooklight.imageprocessing.reencode_image import reencode_image
 from spooklight.settings import Settings
 
 
-def generate_image_from_description(llm_client, image_description):
+def generate_image_from_description(*, llm_client, image_description, visual_style):
 
     print(Back.MAGENTA + "GENERATING NEXT IMAGE FROM DESCRIPTION")
 
+    prompt = f"{image_description}\n\n{visual_style}"
+
+    print(Fore.BLUE + "Prompt: " + Fore.YELLOW + prompt)
+
     response = llm_client.images.generate(
         model=Settings.get_generate_image_model(),
-        prompt=image_description,
+        prompt=prompt,
         size="1024x1024",
         quality="hd",
         n=1,
@@ -24,7 +28,7 @@ def generate_image_from_description(llm_client, image_description):
     # Check if the request was successful
     if response.status_code == 200:
         image = response.content
-        print(Fore.YELLOW + f"Image downloaded into memory from {image_url}")
+        print(Fore.BLUE + f"Image downloaded into memory from {image_url}")
     else:
         print(
             Fore.RED

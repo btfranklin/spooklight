@@ -9,6 +9,7 @@ class Settings:
     __enhance_story_concept_model: str = "chatgpt-4o-latest"
     __describe_image_model: str = "chatgpt-4o-latest"
     __generate_image_description_model: str = "chatgpt-4o-latest"
+    __generate_visual_style_model: str = "chatgpt-4o-latest"
     __generate_image_model: str = "dall-e-3"
     __generate_narrative_model: str = "chatgpt-4o-latest"
     __generate_title_model: str = "chatgpt-4o-latest"
@@ -42,6 +43,10 @@ class Settings:
     @classmethod
     def get_generate_image_description_model(cls) -> str:
         return cls.__generate_image_description_model
+
+    @classmethod
+    def get_generate_visual_style_model(cls) -> str:
+        return cls.__generate_visual_style_model
 
     @classmethod
     def get_generate_image_model(cls) -> str:

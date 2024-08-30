@@ -45,9 +45,13 @@ def generate_first_step(
     elif starting_image_description is not None:
         print(Fore.YELLOW + "Using provided image description")
         image_description = starting_image_description
-        first_image = generate_image_from_description(llm_client, image_description)
         visual_style = generate_visual_style_from_image_description(
             llm_client, image_description
+        )
+        first_image = generate_image_from_description(
+            llm_client=llm_client,
+            image_description=image_description,
+            visual_style=visual_style,
         )
 
     else:
@@ -61,7 +65,9 @@ def generate_first_step(
 
         # Generate the first image
         first_image = generate_image_from_description(
-            llm_client, image_description, visual_style
+            llm_client=llm_client,
+            image_description=image_description,
+            visual_style=visual_style,
         )
 
     story.visual_style = visual_style

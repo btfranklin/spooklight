@@ -1,7 +1,8 @@
 from openai import OpenAI
 from colorama import Back, Fore
 from promptdown import StructuredPrompt
-from settings import Settings
+
+from spooklight.settings import Settings
 
 
 def generate_story_concept_from_image_description(

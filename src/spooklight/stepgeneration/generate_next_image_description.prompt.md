@@ -10,6 +10,8 @@ The image should not illustrate what has already happened, but rather what will 
 
 DO NOT write any narratives or story elements. Just describe the image visually, with a literal description of exactly what it depicts. There's no need for character names, plot points, or any other story elements.
 
+Be concise and direct. Keep your description to one or two sentences.
+
 ## Conversation
 
 **User:**

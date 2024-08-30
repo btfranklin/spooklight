@@ -74,14 +74,20 @@ def build_pdf_from_story_files() -> None:
                 img_width = max_width
                 img_height = max_width / aspect_ratio
 
-        # Add image
+        # Add image to the PDF
         story_flow.append(Image(image_file, width=img_width, height=img_height))
         story_flow.append(Spacer(1, 0.5 * inch))  # Space between image and narrative
 
-        # Add narrative
+        # Add narrative with paragraph separation
         with open(narrative_file, "r") as f:
             narrative = f.read().strip()
-        story_flow.append(Paragraph(narrative, styles["BodyText"]))
+
+        # Split the narrative into paragraphs based on double newlines
+        paragraphs = narrative.split("\n\n")
+        for paragraph in paragraphs:
+            story_flow.append(Paragraph(paragraph.strip(), styles["BodyText"]))
+            story_flow.append(Spacer(1, 0.2 * inch))  # Space between paragraphs
+
         story_flow.append(PageBreak())  # Start a new page for the next step
 
         step += 1

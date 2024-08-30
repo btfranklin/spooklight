@@ -4,6 +4,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Image, Spacer, PageBreak
 from reportlab.lib.units import inch
+from PIL import Image as PILImage
 
 from spooklight.settings import Settings
 
@@ -57,8 +58,24 @@ def build_pdf_from_story_files() -> None:
         if not os.path.exists(narrative_file) or not os.path.exists(image_file):
             break
 
+        # Adjust the image size to fit within a max height of 4.5 inches, maintaining aspect ratio
+        with PILImage.open(image_file) as img:
+            img_width, img_height = img.size
+            max_height = 4.5 * inch
+            aspect_ratio = img_width / img_height
+
+            if img_height > max_height:
+                img_height = max_height
+                img_width = max_height * aspect_ratio
+
+            # Ensure the image does not exceed the page width
+            max_width = 6.5 * inch  # Adjusting for margins
+            if img_width > max_width:
+                img_width = max_width
+                img_height = max_width / aspect_ratio
+
         # Add image
-        story_flow.append(Image(image_file, width=6 * inch, height=4.5 * inch))
+        story_flow.append(Image(image_file, width=img_width, height=img_height))
         story_flow.append(Spacer(1, 0.5 * inch))  # Space between image and narrative
 
         # Add narrative

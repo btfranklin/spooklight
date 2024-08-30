@@ -1,7 +1,8 @@
 from colorama import Back, Fore
 from promptdown import StructuredPrompt
-from settings import Settings
 from openai import OpenAI
+
+from spooklight.settings import Settings
 
 
 def enhance_story_concept(llm_client: OpenAI, story_concept: str) -> str:

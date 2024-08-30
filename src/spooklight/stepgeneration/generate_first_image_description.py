@@ -20,7 +20,7 @@ def generate_first_image_description(llm_client: OpenAI, story: Story) -> str:
 
     structured_prompt = StructuredPrompt.from_package_resource(
         package="spooklight.stepgeneration",
-        resource_name="generate_next_image_description.prompt.md",
+        resource_name="generate_first_image_description.prompt.md",
     )
     template_values = {
         "story_concept": story.concept,

@@ -17,6 +17,7 @@ def generate_image_from_description(*, llm_client, image_description, visual_sty
         prompt=prompt,
         size="1024x1024",
         quality="hd",
+        style="natural",
         n=1,
     )
 

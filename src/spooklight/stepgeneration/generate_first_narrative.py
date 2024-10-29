@@ -21,6 +21,7 @@ def generate_first_narrative(
         resource_name="generate_first_narrative.prompt.md",
     )
     template_values = {
+        "author_style": story.author_style,
         "story_concept": story.concept,
         "image_description": image_description,
     }

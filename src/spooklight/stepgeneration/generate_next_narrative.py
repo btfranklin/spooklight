@@ -32,6 +32,7 @@ def generate_next_narrative(llm_client: OpenAI, story: Story, next_image: bytes)
         resource_name="generate_next_narrative.prompt.md",
     )
     template_values = {
+        "author_style": story.author_style,
         "story_concept": story.concept,
         "story_narrative": story_narrative,
         "image_description": image_description,

@@ -5,14 +5,14 @@ class Settings:
 
     # Read-only settings
     __output_directory: str = "output"
-    __generate_story_concept_from_image_description_model: str = "chatgpt-4o-latest"
-    __enhance_story_concept_model: str = "chatgpt-4o-latest"
-    __describe_image_model: str = "chatgpt-4o-latest"
-    __generate_image_description_model: str = "chatgpt-4o-latest"
-    __generate_visual_style_model: str = "chatgpt-4o-latest"
+    __generate_story_concept_from_image_description_model: str = "gpt-4o"
+    __enhance_story_concept_model: str = "gpt-4o"
+    __describe_image_model: str = "gpt-4o"
+    __generate_image_description_model: str = "gpt-4o"
+    __generate_visual_style_model: str = "gpt-4o"
     __generate_image_model: str = "dall-e-3"
-    __generate_narrative_model: str = "chatgpt-4o-latest"
-    __generate_title_model: str = "chatgpt-4o-latest"
+    __generate_narrative_model: str = "gpt-4o"
+    __generate_title_model: str = "gpt-4o"
 
     # Read/Write Accessors
     @classmethod

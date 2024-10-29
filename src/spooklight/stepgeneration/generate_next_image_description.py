@@ -4,9 +4,6 @@ from promptdown import StructuredPrompt
 
 from spooklight.model import Story
 from spooklight.settings import Settings
-from spooklight.stepgeneration.select_random_purpose import (
-    select_random_purpose,
-)
 
 
 def generate_next_image_description(llm_client: OpenAI, story: Story) -> str:
@@ -21,10 +18,6 @@ def generate_next_image_description(llm_client: OpenAI, story: Story) -> str:
     for step in story.steps:
         story_narrative += step.narrative
 
-    # Randomly select the next image's purpose for the story
-    image_purpose = select_random_purpose()
-    print(Fore.BLUE + "Image purpose: " + Fore.YELLOW + image_purpose)
-
     structured_prompt = StructuredPrompt.from_package_resource(
         package="spooklight.stepgeneration",
         resource_name="generate_next_image_description.prompt.md",
@@ -32,7 +25,6 @@ def generate_next_image_description(llm_client: OpenAI, story: Story) -> str:
     template_values = {
         "story_concept": story.concept,
         "story_narrative": story_narrative,
-        "image_purpose": image_purpose,
     }
     structured_prompt.apply_template_values(template_values)
     messages = structured_prompt.to_chat_completion_messages()

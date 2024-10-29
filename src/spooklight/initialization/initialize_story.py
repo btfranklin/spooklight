@@ -1,3 +1,4 @@
+import random
 from openai import OpenAI
 from colorama import Back, Fore
 
@@ -27,6 +28,9 @@ def initialize_story(
     print(Back.BLUE + "INITIALIZING STORY")
 
     story = Story()
+
+    story.author_style = select_random_author_style()
+    print(Fore.BLUE + "Author style: " + Fore.YELLOW + story.author_style)
 
     # Case 1: No story concept provided
     if story_concept is None:
@@ -64,3 +68,29 @@ def initialize_story(
         story.concept = enhance_story_concept(llm_client, story_concept)
 
     return story
+
+
+def select_random_author_style() -> str:
+    authors = [
+        "H.P. Lovecraft",
+        "Leo Tolstoy",
+        "Jane Austen",
+        "Charles Dickens",
+        "Fyodor Dostoevsky",
+        "Mark Twain",
+        "James Joyce",
+        "Franz Kafka",
+        "Virginia Woolf",
+        "Gabriel García Márquez",
+        "Toni Morrison",
+        "Haruki Murakami",
+        "Margaret Atwood",
+        "Ursula K. Le Guin",
+        "J.R.R. Tolkien",
+        "George Orwell",
+        "Chinua Achebe",
+        "Salman Rushdie",
+        "Arthur C. Clarke",
+        "Isabel Allende",
+    ]
+    return random.choice(authors)

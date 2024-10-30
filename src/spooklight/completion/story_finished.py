@@ -2,6 +2,7 @@ from colorama import Back, Fore
 from promptdown import StructuredPrompt
 from openai import OpenAI
 from spooklight.model import Story
+from spooklight.settings import Settings
 
 
 def narrative_has_reached_natural_conclusion(llm_client: OpenAI, story: Story) -> bool:

@@ -8,10 +8,15 @@ from spooklight.stepgeneration.generate_next_image_description import (
     generate_next_image_description,
 )
 from spooklight.stepgeneration.generate_next_narrative import generate_next_narrative
+from spooklight.stepgeneration.generate_concluding_narrative import (
+    generate_concluding_narrative,
+)
 from spooklight.stepgeneration.save_step_files import save_step_files
 
 
-def generate_step(llm_client: OpenAI, story: Story) -> None:
+def generate_step(
+    llm_client: OpenAI, story: Story, *, is_conclusion: bool = False
+) -> None:
     """
     Generate the next image and narrative for the current step.
     """
@@ -29,7 +34,10 @@ def generate_step(llm_client: OpenAI, story: Story) -> None:
     )
 
     # From the image, generate the next narrative
-    next_narrative = generate_next_narrative(llm_client, story, next_image)
+    if not is_conclusion:
+        next_narrative = generate_next_narrative(llm_client, story, next_image)
+    else:
+        next_narrative = generate_concluding_narrative(llm_client, story, next_image)
 
     step = Step(next_image, next_narrative)
     story.steps.append(step)

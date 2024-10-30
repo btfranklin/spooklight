@@ -1,21 +1,7 @@
 from colorama import Back, Fore
 from promptdown import StructuredPrompt
-from settings import Settings
 from openai import OpenAI
 from spooklight.model import Story
-
-
-def story_finished(llm_client: OpenAI, story: Story, story_length: int | None) -> bool:
-    """
-    Check if the story has reached a natural conclusion, or has reached the maximum number of steps.
-    """
-
-    if story_length is None:
-        # Determine if the story's narrative has reached a natural conclusion
-        return narrative_has_reached_natural_conclusion(llm_client, story)
-
-    else:
-        return len(story.steps) >= story_length
 
 
 def narrative_has_reached_natural_conclusion(llm_client: OpenAI, story: Story) -> bool:

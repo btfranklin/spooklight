@@ -11,7 +11,9 @@ from spooklight.initialization.initialize_story import initialize_story
 from spooklight.settings import Settings
 from spooklight.stepgeneration.generate_first_step import generate_first_step
 from spooklight.stepgeneration.generate_step import generate_step
-from spooklight.completion.story_finished import story_finished
+from spooklight.completion.story_finished import (
+    narrative_has_reached_natural_conclusion,
+)
 from spooklight.completion.build_pdf_from_story_files import (
     build_pdf_from_story_files,
 )
@@ -59,10 +61,19 @@ def generate_story(
     )
 
     # Generate the story steps until the story is finished
-    while not story_finished(llm_client, story, story_length):
+    if story_length is None:
+        while not narrative_has_reached_natural_conclusion(llm_client, story):
 
-        # Generate the next image and narrative
-        generate_step(llm_client, story)
+            # Generate the next image and narrative
+            generate_step(llm_client, story)
+
+    else:
+        for _ in range(1, story_length - 1):
+            # Generate the next image and narrative
+            generate_step(llm_client, story)
+
+        # Generate the conclusion
+        generate_step(llm_client, story, is_conclusion=True)
 
     # Generate the story title by reading the story narrative
     story.title = generate_title_from_narrative(llm_client, story)

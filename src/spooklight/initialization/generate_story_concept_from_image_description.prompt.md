@@ -15,6 +15,7 @@ The user will provide you with a description of an image. Based on the descripti
 <rule>Keep the concept concise, ensuring it reflects the imagery while allowing room for creative expansion.</rule>
 <rule>DO NOT include a title.</rule>
 <rule>Approach this like the writing of a logline for a film script, with a maximum length of about two sentences.</rule>
+<rule>Avoid overused words like "delve" and "tapestry".</rule>
 </rules>
 
 ## Conversation

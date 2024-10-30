@@ -168,8 +168,9 @@ cython_debug/
 # macOS
 .DS_Store
 
-# Output folder
+# Output folders
 output/
+saved/
 
 # Images folder
 images/

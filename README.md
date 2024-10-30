@@ -18,6 +18,54 @@ The tool produces output in the form of a series of images and their associated 
 
 Additionally, the tool generates a title for the story, saved as `output/title.txt`, and a compiled PDF document containing the entire story, including all images and narratives, saved as `output/story.pdf`. The PDF will also include the contents of a file named `concept.txt` on the first page, which contains the story's concept.
 
+## Flowchart
+
+The following flowchart illustrates the process of generating a story using Spooklight:
+
+```mermaid
+flowchart TD
+    %% Initialization Subgraph
+    subgraph Initialization
+        Start[Start] --> InitializeStory[Initialize Story]
+        InitializeStory --> CheckStoryConcept{Story Concept Provided?}
+        CheckStoryConcept -- Yes --> EnhanceStoryConcept[Enhance Story Concept]
+        EnhanceStoryConcept --> SelectAuthorStyle[Select Random Author Style]
+        SelectAuthorStyle --> ProceedToFirstStep[Proceed to Generate First Step]
+        CheckStoryConcept -- No --> CheckStartingImagePath{Starting Image Path Provided?}
+        CheckStartingImagePath -- Yes --> DescribeImageAtPath[Describe Image at Path]
+        DescribeImageAtPath --> SetImageDescription[Set Image Description]
+        CheckStartingImagePath -- No --> CheckStartingImageDescription{Starting Image Description Provided?}
+        CheckStartingImageDescription -- Yes --> SetImageDescription
+        CheckStartingImageDescription -- No --> Error[Exit with Error]
+        SetImageDescription --> GenerateStoryConcept[Generate Story Concept from Image Description]
+        GenerateStoryConcept --> SelectAuthorStyle
+    end
+
+    %% First Step Generation Subgraph
+    ProceedToFirstStep --> GenerateFirstStep[Generate First Step]
+    subgraph First Step Generation
+        GenerateFirstStep --> SaveFirstStepFiles[Save First Step Files]
+    end
+
+    %% Story Loop Subgraph
+    SaveFirstStepFiles --> StoryLoop{Story Finished?}
+    subgraph Story Loop
+        StoryLoop -- No --> GenerateNextImageDescription[Generate Next Image Description]
+        GenerateNextImageDescription --> GenerateImageFromDescription[Generate Image from Description]
+        GenerateImageFromDescription --> GenerateNextNarrative[Generate Next Narrative]
+        GenerateNextNarrative --> SaveNextStepFiles[Save Step Files]
+        SaveNextStepFiles --> StoryLoop
+    end
+
+    StoryLoop -- Yes --> GenerateStoryTitle[Generate Story Title]
+
+    %% Completion Subgraph
+    subgraph Completion
+        GenerateStoryTitle --> BuildPDF[Build PDF from Story Files]
+        BuildPDF --> End[End]
+    end
+```
+
 ## Configuration Parameters
 
 The tool has various parameters that can be provided at execution time, which control the nature of the generation process. These parameters are:

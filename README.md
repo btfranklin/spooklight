@@ -43,13 +43,28 @@ flowchart TD
 
     %% First Step Generation Subgraph
     ProceedToFirstStep --> GenerateFirstStep[Generate First Step]
-    subgraph First Step Generation
-        GenerateFirstStep --> SaveFirstStepFiles[Save First Step Files]
+    subgraph "First Step Generation"
+        GenerateFirstStep --> CheckStartingImagePath2{Starting Image Path Provided?}
+        CheckStartingImagePath2 -- Yes --> UseImageAtPath[Use Image at Provided Path]
+        UseImageAtPath --> ReadAndReencodeImage[Read and Re-encode Image]
+        ReadAndReencodeImage --> DescribeImage[Describe Image at Path]
+        DescribeImage --> DescribeVisualStyle[Describe Visual Style of Image]
+        DescribeVisualStyle --> SetImageDescriptionAndVisualStyle[Set Image Description and Visual Style]
+        CheckStartingImagePath2 -- No --> CheckStartingImageDescription2{Starting Image Description Provided?}
+        CheckStartingImageDescription2 -- Yes --> UseImageDescription[Use Provided Image Description]
+        UseImageDescription --> GenerateVisualStyle[Generate Visual Style from Description]
+        GenerateVisualStyle --> GenerateImage[Generate Image from Description and Visual Style]
+        GenerateImage --> SetImageDescriptionAndVisualStyle
+        CheckStartingImageDescription2 -- No --> GenerateFirstImageDescription[Generate First Image Description]
+        GenerateFirstImageDescription --> GenerateVisualStyle[Generate Visual Style from Description]
+        SetImageDescriptionAndVisualStyle --> SetStoryVisualStyle[Set Story Visual Style]
+        SetStoryVisualStyle --> GenerateFirstNarrative[Generate First Narrative]
+        GenerateFirstNarrative --> SaveFirstStepFiles[Save First Step Files]
     end
 
     %% Story Loop Subgraph
     SaveFirstStepFiles --> StoryLoop{Story Finished?}
-    subgraph Story Loop
+    subgraph "Story Loop"
         StoryLoop -- No --> GenerateNextImageDescription[Generate Next Image Description]
         GenerateNextImageDescription --> GenerateImageFromDescription[Generate Image from Description]
         GenerateImageFromDescription --> GenerateNextNarrative[Generate Next Narrative]
@@ -64,6 +79,7 @@ flowchart TD
         GenerateStoryTitle --> BuildPDF[Build PDF from Story Files]
         BuildPDF --> End[End]
     end
+
 ```
 
 ## Configuration Parameters

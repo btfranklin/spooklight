@@ -6,14 +6,14 @@ authors = [
     {name = "B.T. Franklin", email = "brandon.franklin@gmail.com"},
 ]
 dependencies = [
-    "click>=8.1.7",
-    "openai>=1.42.0",
+    "click>=8.1.8",
+    "openai>=1.66.3",
     "requests>=2.32.3",
     "colorama>=0.4.6",
-    "promptdown>=0.7.5",
+    "promptdown>=0.9.0",
     "python-dotenv>=1.0.1",
-    "reportlab>=4.2.2",
-    "pillow>=10.4.0",
+    "reportlab>=4.3.1",
+    "pillow>=11.1.0",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -31,6 +31,6 @@ excludes = ["tests/**"]
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "pytest>=8.3.2",
-    "flake8>=7.1.1",
+    "pytest>=8.3.5",
+    "flake8>=7.1.2",
 ]

@@ -6,18 +6,17 @@ authors = [
     {name = "B.T. Franklin", email = "brandon.franklin@gmail.com"},
 ]
 dependencies = [
-    "click>=8.1.8",
-    "openai>=1.66.3",
-    "requests>=2.32.3",
-    "colorama>=0.4.6",
-    "promptdown>=0.9.0",
-    "python-dotenv>=1.0.1",
-    "reportlab>=4.3.1",
-    "pillow>=11.1.0",
+    "openai>=2.11.0",
+    "promptdown>=1.0.1",
+    "python-dotenv>=1.2.1",
+    "pillow>=12.0.0",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "MIT"}
+
+[project.scripts]
+spooklight = "spooklight.main:main"
 
 [build-system]
 requires = ["pdm-backend"]

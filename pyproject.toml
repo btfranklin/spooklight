@@ -11,9 +11,26 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "pillow>=12.0.0",
 ]
-requires-python = "==3.12.*"
+requires-python = ">=3.13.0"
 readme = "README.md"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/btfranklin/spooklight"
+Issues = "https://github.com/btfranklin/spooklight/issues"
+Changelog = "https://github.com/btfranklin/spooklight/releases"
+Repository = "https://github.com/btfranklin/spooklight.git"
 
 [project.scripts]
 spooklight = "spooklight.main:main"
@@ -28,8 +45,15 @@ distribution = true
 [tool.pdm.build]
 excludes = ["tests/**"]
 
-[tool.pdm.dev-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=8.3.5",
-    "flake8>=7.1.2",
+    "ruff>=0.14.10",
 ]
+
+[tool.pdm.scripts]
+test = "pytest"
+lint = "ruff check src tests"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]

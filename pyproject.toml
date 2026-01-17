@@ -1,17 +1,14 @@
 [project]
 name = "spooklight"
 version = "0.1.0"
-description = "Default template for PDM package"
+description = "Spooklight Django application"
 authors = [
     {name = "B.T. Franklin", email = "brandon.franklin@gmail.com"},
 ]
 dependencies = [
-    "openai>=2.11.0",
-    "promptdown>=1.0.1",
-    "python-dotenv>=1.2.1",
-    "pillow>=12.0.0",
+    "Django>=6.0.1",
 ]
-requires-python = ">=3.13.0"
+requires-python = ">=3.13"
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = [
@@ -19,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Framework :: Django",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
@@ -32,9 +30,6 @@ Issues = "https://github.com/btfranklin/spooklight/issues"
 Changelog = "https://github.com/btfranklin/spooklight/releases"
 Repository = "https://github.com/btfranklin/spooklight.git"
 
-[project.scripts]
-spooklight = "spooklight.main:main"
-
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
@@ -43,17 +38,25 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.pdm.build]
+package-dir = "src"
 excludes = ["tests/**"]
 
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",
+    "pytest-django>=4.8.0",
     "ruff>=0.14.10",
 ]
 
 [tool.pdm.scripts]
 test = "pytest"
 lint = "ruff check src tests"
+dev = "python src/manage.py runserver"
 
 [tool.ruff.lint]
 select = ["E", "F", "W"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "spooklight.settings"
+pythonpath = ["src"]
+testpaths = ["tests"]

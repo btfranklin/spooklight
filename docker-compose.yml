@@ -1,0 +1,14 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "pdm run python src/manage.py migrate && \
+             pdm run python src/manage.py runserver 0.0.0.0:8000"
+    environment:
+      DJANGO_DEBUG: "1"
+      DJANGO_SECRET_KEY: "dev-secret-key"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+    ports:
+      - "8000:8000"

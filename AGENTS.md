@@ -4,7 +4,7 @@
 - This repository is the Spooklight Django project, using a `src/` layout with the Django project package in `src/spooklight/`.
 - Add new Django apps as top-level packages under `src/` (for example, `src/stories/`), and keep app logic self-contained.
 - Keep tests in `tests/` and follow pytest discovery conventions.
-- Keep Django apps as owners of their data and logic; avoid cross-app coupling between example apps.
+- Keep Django apps as owners of their data and logic; avoid cross-app coupling between apps.
 - Store uncompiled front-end assets in `assets/` and deposit build outputs into `static/`. Keep runtime collections such as `staticfiles/` and user uploads (`media/`) outside of version control.
 - Consolidate architecture notes, runbooks, and decision records in `docs/`. Before major refactors, review and extend these documents to keep system knowledge current.
 
@@ -13,8 +13,9 @@
 - Target runtimes: Python 3.14+ always; use Django 6.x for Django services unless explicitly scoped otherwise.
 - Enforce version policy in `pyproject.toml`: set `requires-python = ">=3.13"` and pin Django to `>=6.0.1` (or the project’s chosen minor track).
 - Ensure database migrations run before the app starts by standardizing on `python manage.py migrate` (wrap with your packaging tool as needed: `pdm run python manage.py migrate`).
-- Expose a single test runner command (`pdm run test`) in this example project.
-- Expose a lint command (`pdm run lint`) in this example project.
+- Expose a single test runner command (`pdm run test`) in this project.
+- Expose a lint command (`pdm run lint`) in this project.
+- Expose a template reformatting command (`pdm run reformat-templates`) in this project.
 - Maintain an `npm` script for CSS/JS tooling (`npm run build:css`) so front-end assets rebuild predictably across machines and CI.
 
 ## Coding Style & Naming Conventions

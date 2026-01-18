@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="spooklight">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block title %}
+                Spooklight
+            {% endblock title %}
+        </title>
+        <meta name="description"
+              content="Bring your imagined worlds to life with a private, user-owned creative workspace.">
+        <meta name="keywords"
+              content="worldbuilding, storytelling, creative writing, lore, characters, SaaS">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    </head>
+    <body class="min-h-screen bg-base-100 text-base-content">
+        <div class="relative min-h-screen overflow-hidden bg-emberfield">
+            <div class="pointer-events-none absolute inset-0 mesh-lines opacity-30"></div>
+            <header class="relative z-10 border-b border-base-200/70 bg-base-100/80 backdrop-blur">
+                <div class="navbar mx-auto max-w-6xl px-6 py-3">
+                    <div class="navbar-start gap-3">
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary/20 text-secondary">
+                            <svg class="h-5 w-5"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 aria-hidden="true">
+                                <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7"></path>
+                            </svg>
+                        </span>
+                        <a class="text-xl font-display" href="{% url 'core:landing' %}">Spooklight</a>
+                    </div>
+                    <div class="navbar-end gap-3">
+                        {% if request.user.is_authenticated %}
+                            <span class="badge badge-outline">Demo Mode</span>
+                            <a class="btn btn-secondary btn-sm" href="{% url 'core:dashboard' %}">Dashboard</a>
+                        {% else %}
+                            <form method="post" action="{% url 'core:demo_login' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <button class="btn btn-primary btn-sm" type="submit">Demo Login</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </header>
+            <main class="relative z-10">
+                {% block content %}
+                {% endblock content %}
+            </main>
+            <footer class="relative z-10 border-t border-base-200/70 bg-base-100/70">
+                <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-sm text-base-content/70 md:flex-row md:items-center md:justify-between">
+                    <span>Build worlds. Keep them yours.</span>
+                    <span>Spooklight is a private, user-owned creative workspace.</span>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>

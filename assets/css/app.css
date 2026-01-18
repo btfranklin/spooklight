@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --halo-1: 243 214 167;
+    --halo-2: 255 237 213;
+    --halo-3: 255 255 255;
+  }
+
+  html {
+    font-family: "Sora", "Trebuchet MS", sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: "Fraunces", "Times New Roman", serif;
+  }
+}
+
+@layer utilities {
+  .bg-emberfield {
+    background-image:
+      radial-gradient(1200px circle at 20% 20%, rgb(var(--halo-1) / 0.35), transparent 60%),
+      radial-gradient(900px circle at 80% 0%, rgb(var(--halo-2) / 0.35), transparent 55%),
+      radial-gradient(700px circle at 60% 80%, rgb(var(--halo-3) / 0.7), transparent 60%);
+  }
+
+  .mesh-lines {
+    background-image:
+      linear-gradient(to right, rgb(15 23 42 / 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(15 23 42 / 0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .animate-rise {
+    opacity: 0;
+    animation: rise-in 0.8s ease forwards;
+  }
+
+  .animate-delay-1 {
+    animation-delay: 120ms;
+  }
+
+  .animate-delay-2 {
+    animation-delay: 260ms;
+  }
+
+  .animate-delay-3 {
+    animation-delay: 400ms;
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-rise {
+      opacity: 1;
+      animation: none;
+    }
+  }
+}

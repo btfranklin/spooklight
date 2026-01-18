@@ -1,3 +1,14 @@
+FROM node:20-bookworm-slim AS assets
+
+WORKDIR /app
+
+COPY package.json tailwind.config.js /app/
+COPY assets/ /app/assets/
+COPY src/ /app/src/
+
+RUN npm install
+RUN npm run build:css
+
 FROM python:3.14-slim
 
 WORKDIR /app
@@ -10,6 +21,8 @@ RUN pip install --no-cache-dir pdm
 COPY . /app/spooklight
 
 WORKDIR /app/spooklight
+
+COPY --from=assets /app/static/css/app.css /app/spooklight/static/css/app.css
 
 RUN rm -f pdm.lock && pdm install --group dev
 

@@ -165,12 +165,19 @@ cython_debug/
 .vscode/
 .idea/
 
+# Node
+node_modules/
+
 # macOS
 .DS_Store
 
 # Output folders
 output/
 saved/
+
+# Built CSS artifacts
+static/css/app.css
+static/css/app.css.map
 
 # Images folder
 images/

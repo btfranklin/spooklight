@@ -34,24 +34,13 @@ Repository = "https://github.com/btfranklin/spooklight.git"
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-[tool.pdm]
-distribution = true
-
-[tool.pdm.build]
-package-dir = "src"
-excludes = ["tests/**"]
-
 [dependency-groups]
 dev = [
-    "pytest>=8.3.5",
-    "pytest-django>=4.8.0",
-    "ruff>=0.14.10",
+    "pytest>=9.0.2",
+    "pytest-django>=4.11.1",
+    "djlint>=1.36.4",
+    "ruff>=0.14.13",
 ]
-
-[tool.pdm.scripts]
-test = "pytest"
-lint = "ruff check src tests"
-dev = "python src/manage.py runserver"
 
 [tool.ruff.lint]
 select = ["E", "F", "W"]
@@ -60,3 +49,16 @@ select = ["E", "F", "W"]
 DJANGO_SETTINGS_MODULE = "spooklight.settings"
 pythonpath = ["src"]
 testpaths = ["tests"]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+package-dir = "src"
+excludes = ["tests/**"]
+
+[tool.pdm.scripts]
+test = "pytest"
+lint = {shell = "ruff check src tests && djlint src --profile=django --lint --check"}
+dev = "python src/manage.py runserver"
+reformat-templates = "djlint src --profile=django --reformat"

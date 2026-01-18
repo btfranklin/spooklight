@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --halo-1: 243 214 167;
-    --halo-2: 255 237 213;
-    --halo-3: 255 255 255;
+    --halo-1: 92 130 212;
+    --halo-2: 156 118 208;
+    --halo-3: 255 210 140;
   }
 
   html {
@@ -17,23 +17,23 @@
   h2,
   h3,
   .font-display {
-    font-family: "Fraunces", "Times New Roman", serif;
+    font-family: "Cinzel", "Times New Roman", serif;
   }
 }
 
 @layer utilities {
   .bg-emberfield {
     background-image:
-      radial-gradient(1200px circle at 20% 20%, rgb(var(--halo-1) / 0.35), transparent 60%),
-      radial-gradient(900px circle at 80% 0%, rgb(var(--halo-2) / 0.35), transparent 55%),
-      radial-gradient(700px circle at 60% 80%, rgb(var(--halo-3) / 0.7), transparent 60%);
+      radial-gradient(900px circle at 18% 12%, rgb(var(--halo-1) / 0.45), transparent 60%),
+      radial-gradient(800px circle at 82% 22%, rgb(var(--halo-2) / 0.4), transparent 55%),
+      radial-gradient(500px circle at 56% 60%, rgb(var(--halo-3) / 0.38), transparent 60%),
+      linear-gradient(180deg, rgb(7 12 28) 0%, rgb(10 22 48) 45%, rgb(6 18 32) 100%);
   }
 
   .mesh-lines {
     background-image:
-      linear-gradient(to right, rgb(15 23 42 / 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(15 23 42 / 0.08) 1px, transparent 1px);
-    background-size: 48px 48px;
+      radial-gradient(circle at 1px 1px, rgb(226 232 240 / 0.18) 1px, transparent 0);
+    background-size: 44px 44px;
   }
 
   .animate-rise {

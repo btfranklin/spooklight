@@ -25,18 +25,10 @@
             <header class="relative z-10 border-b border-base-200/70 bg-base-100/80 backdrop-blur">
                 <div class="navbar mx-auto max-w-6xl px-6 py-3">
                     <div class="navbar-start gap-3">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-secondary/20 text-secondary">
-                            <svg class="h-5 w-5"
-                                 viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="2"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round"
-                                 aria-hidden="true">
-                                <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7"></path>
-                            </svg>
-                        </span>
+                        <picture>
+                            <source srcset="{% static 'images/wisp-icon.webp' %}" type="image/webp">
+                            <img src="{% static 'images/wisp-icon.png' %}" alt="Spooklight wisp" class="block h-10 w-10 object-contain" width="40" height="40">
+                        </picture>
                         <a class="text-xl font-display" href="{% url 'core:landing' %}">Spooklight</a>
                     </div>
                     <div class="navbar-end gap-3">

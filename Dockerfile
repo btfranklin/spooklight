@@ -26,4 +26,10 @@ COPY --from=assets /app/static/css/app.css /app/spooklight/static/css/app.css
 
 RUN rm -f pdm.lock && pdm install --group dev
 
+ENV DJANGO_SECRET_KEY="build-secret-key" \
+    DJANGO_DEBUG="0" \
+    DJANGO_ALLOWED_HOSTS="*"
+
+RUN pdm run python src/manage.py collectstatic --noinput
+
 CMD ["pdm", "run", "python", "src/manage.py", "runserver", "0.0.0.0:8000"]

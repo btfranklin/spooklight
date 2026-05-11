@@ -13,6 +13,9 @@ DEMO_EMAIL = "demo@spooklight.local"
 
 
 def landing(request: HttpRequest) -> HttpResponse:
+    if request.user.is_authenticated:
+        return redirect("core:dashboard")
+
     return render(request, "core/landing.html")
 
 

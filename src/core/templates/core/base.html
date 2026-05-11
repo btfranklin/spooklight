@@ -27,13 +27,16 @@
                     <div class="navbar-start gap-3">
                         <picture>
                             <source srcset="{% static 'images/wisp-icon.webp' %}" type="image/webp">
-                            <img src="{% static 'images/wisp-icon.png' %}" alt="Spooklight wisp" class="block h-10 w-10 object-contain" width="40" height="40">
+                            <img src="{% static 'images/wisp-icon.png' %}"
+                                 alt="Spooklight wisp"
+                                 class="block h-10 w-10 object-contain"
+                                 width="40"
+                                 height="40">
                         </picture>
                         <a class="text-xl font-display" href="{% url 'core:landing' %}">Spooklight</a>
                     </div>
                     <div class="navbar-end gap-3">
                         {% if request.user.is_authenticated %}
-                            <span class="badge badge-outline">Demo Mode</span>
                             <a class="btn btn-secondary btn-sm" href="{% url 'core:dashboard' %}">Dashboard</a>
                         {% else %}
                             <form method="post" action="{% url 'core:demo_login' %}">

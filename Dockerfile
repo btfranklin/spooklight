@@ -24,7 +24,7 @@ WORKDIR /app/spooklight
 
 COPY --from=assets /app/static/css/app.css /app/spooklight/static/css/app.css
 
-RUN rm -f pdm.lock && pdm install --group dev
+RUN pdm install --group dev
 
 ENV DJANGO_SECRET_KEY="build-secret-key" \
     DJANGO_DEBUG="0" \

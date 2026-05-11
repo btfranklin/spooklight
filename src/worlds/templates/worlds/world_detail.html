@@ -1,0 +1,84 @@
+{% extends "core/base.html" %}
+{% block title %}
+    Spooklight | {{ world.name }}
+{% endblock title %}
+{% block content %}
+    <section class="px-6 py-14">
+        <div class="mx-auto max-w-6xl space-y-8">
+            {% with cover=world.active_cover cover_status=world.latest_cover %}
+                <div class="relative min-h-[28rem] overflow-hidden rounded-2xl border border-base-200/70 bg-base-200 shadow-xl">
+                    {% if cover and cover.image %}
+                        <img class="absolute inset-0 h-full w-full object-cover"
+                             src="{{ cover.image.url }}"
+                             alt=""
+                             width="1536"
+                             height="1024">
+                    {% else %}
+                        <div class="absolute inset-0 bg-emberfield"></div>
+                        <div class="absolute inset-0 mesh-lines opacity-25"></div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-base-100 via-base-100/60 to-base-100/10"></div>
+                    <div class="relative flex min-h-[28rem] flex-col justify-end p-8 md:p-10">
+                        <h1 class="max-w-4xl text-5xl font-display leading-tight">{{ world.name }}</h1>
+                        {% if world.genre or cover_status %}
+                            <p class="mt-4 text-sm text-base-content/65">
+                                {% if world.genre %}{{ world.genre }}{% endif %}
+                                {% if world.genre and cover_status %}·{% endif %}
+                                {% if cover_status %}Cover: {{ cover_status.get_status_display }}{% endif %}
+                            </p>
+                        {% endif %}
+                        {% if world.description %}
+                            <p class="mt-4 max-w-3xl text-lg text-base-content/80">{{ world.description }}</p>
+                        {% endif %}
+                        <div class="mt-7 flex flex-wrap gap-3">
+                            <form method="post" action="{% url 'worlds:generate_cover' world.slug %}">
+                                {% csrf_token %}
+                                <button class="btn btn-primary" type="submit">Generate cover</button>
+                            </form>
+                            <a class="btn btn-ghost" href="{% url 'core:dashboard' %}">Back to dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid gap-6 md:grid-cols-2">
+                    <section class="rounded-2xl border border-base-200/70 bg-base-100/80 p-7 shadow-sm">
+                        <h2 class="text-2xl font-display">Aesthetic principles</h2>
+                        {% if world.aesthetic_notes %}
+                            <p class="mt-4 whitespace-pre-line text-base-content/70">{{ world.aesthetic_notes }}</p>
+                        {% else %}
+                            <p class="mt-4 text-base-content/60">No aesthetic notes yet.</p>
+                        {% endif %}
+                    </section>
+                    <section class="rounded-2xl border border-base-200/70 bg-base-100/80 p-7 shadow-sm">
+                        <h2 class="text-2xl font-display">Cover generation</h2>
+                        {% if cover_status %}
+                            <dl class="mt-4 space-y-3 text-sm text-base-content/70">
+                                <div>
+                                    <dt class="font-semibold text-base-content">Model</dt>
+                                    <dd>
+                                        {{ cover_status.model_id }}
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt class="font-semibold text-base-content">Status</dt>
+                                    <dd>
+                                        {{ cover_status.get_status_display }}
+                                    </dd>
+                                </div>
+                                {% if cover_status.error_message %}
+                                    <div>
+                                        <dt class="font-semibold text-base-content">Last error</dt>
+                                        <dd>
+                                            {{ cover_status.error_message }}
+                                        </dd>
+                                    </div>
+                                {% endif %}
+                            </dl>
+                        {% else %}
+                            <p class="mt-4 text-base-content/60">Generate a cover when the world has enough aesthetic direction.</p>
+                        {% endif %}
+                    </section>
+                </div>
+            {% endwith %}
+        </div>
+    </section>
+{% endblock content %}

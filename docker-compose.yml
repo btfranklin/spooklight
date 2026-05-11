@@ -1,14 +1,38 @@
 services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: spooklight
+      POSTGRES_USER: spooklight
+      POSTGRES_PASSWORD: spooklight
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spooklight -d spooklight"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: >
-      sh -c "pdm run python src/manage.py migrate && \
-             pdm run python src/manage.py runserver 0.0.0.0:8000"
+    build: .
+    command: sh /app/spooklight/docker/web-entrypoint.sh
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       DJANGO_DEBUG: "1"
       DJANGO_SECRET_KEY: "dev-secret-key"
       DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      DATABASE_URL: "postgresql://spooklight:spooklight@db:5432/spooklight"
     ports:
-      - "8000:8000"
+      - "8001:8000"
+    volumes:
+      - media_data:/app/spooklight/media
+
+volumes:
+  postgres_data:
+  media_data:

@@ -49,6 +49,17 @@
                 </div>
             </header>
             <main class="relative z-10">
+                {% if messages %}
+                    <div class="mx-auto max-w-6xl px-6 pt-6">
+                        <div class="space-y-3">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} shadow-sm">
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
                 {% block content %}
                 {% endblock content %}
             </main>

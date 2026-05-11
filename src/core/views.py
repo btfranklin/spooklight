@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
+from worlds.models import World
 
 DEMO_USERNAME = "demo"
 DEMO_EMAIL = "demo@spooklight.local"
@@ -46,4 +47,5 @@ def demo_login(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def dashboard(request: HttpRequest) -> HttpResponse:
-    return render(request, "core/dashboard.html")
+    worlds = World.objects.filter(owner=request.user)
+    return render(request, "core/dashboard.html", {"worlds": worlds})

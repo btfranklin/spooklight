@@ -17,22 +17,57 @@ jobs:
             matrix:
                 python-version: ['3.13', '3.14']
 
+        services:
+            postgres:
+                image: postgres:18
+                env:
+                    POSTGRES_DB: spooklight
+                    POSTGRES_USER: spooklight
+                    POSTGRES_PASSWORD: spooklight
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U spooklight -d spooklight"
+                    --health-interval 5s
+                    --health-timeout 5s
+                    --health-retries 10
+
+        env:
+            POSTGRES_DB: spooklight
+            POSTGRES_USER: spooklight
+            POSTGRES_PASSWORD: spooklight
+            POSTGRES_HOST: 127.0.0.1
+            POSTGRES_PORT: 5432
+
         steps:
-            - uses: actions/checkout@v6.0.1
+            - uses: actions/checkout@v6
             - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v6.1.0
+              uses: actions/setup-python@v6
               with:
                   python-version: ${{ matrix.python-version }}
+            - name: Set up Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 20
             - name: Install PDM
               run: |
                   python -m pip install --upgrade pip
                   python -m pip install pdm
-            - name: Install dependencies
+            - name: Install Python dependencies
               run: |
                   pdm install --group dev
-            - name: Lint with ruff
+            - name: Install Node dependencies
               run: |
-                  pdm run ruff check src tests --statistics
-            # - name: Test with pytest
-            #   run: |
-            #     pdm run pytest
+                  npm install --no-package-lock
+            - name: Run Django checks
+              run: |
+                  pdm run python src/manage.py check
+            - name: Run tests
+              run: |
+                  pdm run test
+            - name: Run lint
+              run: |
+                  pdm run lint
+            - name: Build CSS
+              run: |
+                  npm run build:css

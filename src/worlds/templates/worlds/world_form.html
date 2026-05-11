@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% block title %}
+    Spooklight | Create World
+{% endblock title %}
+{% block content %}
+    <section class="px-6 py-14">
+        <div class="mx-auto max-w-3xl">
+            <div class="mb-8">
+                <p class="text-sm uppercase tracking-[0.3em] text-base-content/60">New world</p>
+                <h1 class="mt-3 text-4xl font-display">Create a world</h1>
+                <p class="mt-4 text-base-content/70">
+                    Define the first pieces of its identity. You can refine the world,
+                    add truths, and generate a cover after creation.
+                </p>
+            </div>
+            <form class="space-y-6 rounded-2xl border border-base-200/70 bg-base-100/80 p-8 shadow-sm"
+                  method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <label class="mb-2 block font-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="mt-2 text-sm text-base-content/60">{{ field.help_text }}</p>{% endif %}
+                        {% for error in field.errors %}<p class="mt-2 text-sm text-error">{{ error }}</p>{% endfor %}
+                    </div>
+                {% endfor %}
+                {% if form.non_field_errors %}<div class="alert alert-error">{{ form.non_field_errors }}</div>{% endif %}
+                <div class="flex flex-wrap gap-3">
+                    <button class="btn btn-primary" type="submit">Create world</button>
+                    <a class="btn btn-ghost" href="{% url 'core:dashboard' %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock content %}

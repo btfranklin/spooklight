@@ -2,7 +2,6 @@ __pycache__
 *.pyc
 *.pyo
 *.pyd
-*.sqlite3
 *.log
 .env
 .venv
@@ -17,3 +16,5 @@ __pypackages__
 output
 saved
 images
+media
+staticfiles

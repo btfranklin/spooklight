@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -19,6 +20,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "core",
+    "worlds",
 ]
 
 MIDDLEWARE = [
@@ -52,11 +54,35 @@ TEMPLATES = [
 WSGI_APPLICATION = "spooklight.wsgi.application"
 ASGI_APPLICATION = "spooklight.asgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+
+def database_config_from_environment() -> dict[str, str | int]:
+    database_url = os.environ.get("DATABASE_URL")
+    conn_max_age = int(os.environ.get("POSTGRES_CONN_MAX_AGE", "60"))
+    if database_url:
+        parsed = urlparse(database_url)
+        return {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": unquote(parsed.path.removeprefix("/")),
+            "USER": unquote(parsed.username or ""),
+            "PASSWORD": unquote(parsed.password or ""),
+            "HOST": parsed.hostname or "127.0.0.1",
+            "PORT": str(parsed.port or 5432),
+            "CONN_MAX_AGE": conn_max_age,
+        }
+
+    return {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "spooklight"),
+        "USER": os.environ.get("POSTGRES_USER", "spooklight"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "spooklight"),
+        "HOST": os.environ.get("POSTGRES_HOST", "127.0.0.1"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5433"),
+        "CONN_MAX_AGE": conn_max_age,
     }
+
+
+DATABASES = {
+    "default": database_config_from_environment()
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -84,6 +110,8 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 LOGIN_URL = "core:landing"
 LOGIN_REDIRECT_URL = "core:dashboard"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

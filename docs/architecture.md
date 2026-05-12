@@ -6,12 +6,14 @@ Spooklight is a Django 6 worldbuilding application. The domain spine is:
 User -> World -> World artifacts
 ```
 
-The first implemented artifact is `WorldCoverImage`, which gives each world a visual entry point on the dashboard. Future artifacts such as world truths, references, generated images, and story concepts should also be scoped through `World`.
+Implemented artifacts include `WorldCoverImage`, world truths, characters, locations, important events, image/reference items, and story concepts. Every artifact is scoped through `World`.
 
 ## App Boundaries
 
 - `core` owns the landing page, demo login, and authenticated dashboard shell.
 - `worlds` owns world data, world forms/views, world cover images, cover-generation prompts, and cover-generation tasks.
+- `world_artifacts` owns editable world-scoped artifact categories under each world.
+- `ai_tasks` owns the Postgres-backed AI task ledger, lifecycle events, worker heartbeats, recovery, and worker health commands.
 - Cross-app access should go through explicit models, services, or views rather than hidden template/query logic.
 
 ## Data Ownership
@@ -32,8 +34,12 @@ Generated cover images are stored under `MEDIA_ROOT/world-covers/...` and are no
 
 ## OpenAI Boundary
 
-Cover generation uses the OpenAI Image API with `gpt-image-2`. The service boundary is `worlds.services.generate_cover_image`; tests should mock `worlds.services.request_world_cover_image` so they never call the network.
+Cover generation uses the OpenAI Image API with `gpt-image-2`. The service boundary is `worlds.services.process_world_cover_generation_task`; tests should mock `worlds.services.request_world_cover_image` so they never call the network.
 
 ## Task Boundary
 
-Cover generation is wrapped in a Django task, `worlds.tasks.generate_world_cover`. The current Django task backend is immediate, so local execution completes during the request. Keep the task boundary intact so a durable async backend can replace it later without changing view behavior.
+AI work is tracked in Postgres through `ai_tasks.AITask`. Redis/RQ is the execution transport, but the UI and recovery paths treat the Postgres row as the source of truth.
+
+Request handlers create and enqueue `AITask` rows. They must not call OpenAI directly. Worker code claims tasks, records lifecycle events, updates provider metadata, and writes terminal status back to Postgres.
+
+See [Async AI tasks](async-ai-tasks.md) for the task lifecycle and recovery contract.

@@ -72,6 +72,13 @@ class WorldCoverImage(models.Model):
         on_delete=models.CASCADE,
         related_name="cover_images",
     )
+    ai_task = models.ForeignKey(
+        "ai_tasks.AITask",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="cover_images",
+    )
     image = models.FileField(upload_to=world_cover_upload_path, blank=True)
     source = models.CharField(
         max_length=20,
@@ -103,6 +110,7 @@ class WorldCoverImage(models.Model):
         indexes = [
             models.Index(fields=["world", "-created_at"]),
             models.Index(fields=["status"]),
+            models.Index(fields=["ai_task"]),
         ]
 
     def __str__(self) -> str:

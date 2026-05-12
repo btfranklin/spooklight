@@ -1,0 +1,64 @@
+<div id="world-artifact-tabs" class="space-y-8">
+    <nav class="world-tabs" aria-label="World artifacts">
+        {% for tab in artifact_tabs %}
+            {% if tab.key == active_tab_key %}
+                <span aria-current="page" class="tab tab-active text-sm font-semibold">{{ tab.label }}</span>
+            {% else %}
+                <a class="tab text-sm font-medium"
+                   href="{{ world.get_absolute_url }}?tab={{ tab.key }}"
+                   hx-get="{{ world.get_absolute_url }}?tab={{ tab.key }}&fragment=tabs"
+                   hx-target="#world-artifact-tabs"
+                   hx-swap="outerHTML transition:true"
+                   hx-push-url="{{ world.get_absolute_url }}?tab={{ tab.key }}">{{ tab.label }}</a>
+            {% endif %}
+        {% endfor %}
+    </nav>
+    <section class="min-h-[22rem]">
+        {% if active_tab_key == "aesthetics" %}
+            {% if world.aesthetic_notes or world.genre %}
+                <div class="flex items-start justify-between gap-6">
+                    <div class="max-w-3xl space-y-4">
+                        {% if world.genre %}<p class="text-base-content/70">{{ world.genre }}</p>{% endif %}
+                        {% if world.aesthetic_notes %}
+                            <p class="whitespace-pre-line text-base-content/80">{{ world.aesthetic_notes }}</p>
+                        {% endif %}
+                    </div>
+                    <a class="btn btn-circle btn-primary shrink-0"
+                       href="{{ artifact_add_url }}"
+                       aria-label="{{ active_tab.add_label }}">+</a>
+                </div>
+            {% else %}
+                <div class="flex min-h-[20rem] items-center justify-center">
+                    <a class="btn btn-circle btn-primary btn-lg text-3xl"
+                       href="{{ artifact_add_url }}"
+                       aria-label="{{ active_tab.add_label }}">+</a>
+                </div>
+            {% endif %}
+        {% elif artifact_items %}
+            <div class="mb-5 flex justify-end">
+                <a class="btn btn-circle btn-primary"
+                   href="{{ artifact_add_url }}"
+                   aria-label="{{ active_tab.add_label }}">+</a>
+            </div>
+            <div class="divide-y divide-base-200/80 border-y border-base-200/80">
+                {% for item in artifact_items %}
+                    <article class="py-5">
+                        <h2 class="text-xl font-display">{{ item.title }}</h2>
+                        {% if item.text %}<p class="mt-3 whitespace-pre-line text-base-content/75">{{ item.text }}</p>{% endif %}
+                        {% if item.premise %}<p class="mt-3 whitespace-pre-line text-base-content/75">{{ item.premise }}</p>{% endif %}
+                        {% if item.description %}
+                            <p class="mt-3 whitespace-pre-line text-base-content/75">{{ item.description }}</p>
+                        {% endif %}
+                        {% if item.notes %}<p class="mt-3 whitespace-pre-line text-sm text-base-content/60">{{ item.notes }}</p>{% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="flex min-h-[20rem] items-center justify-center">
+                <a class="btn btn-circle btn-primary btn-lg text-3xl"
+                   href="{{ artifact_add_url }}"
+                   aria-label="{{ active_tab.add_label }}">+</a>
+            </div>
+        {% endif %}
+    </section>
+</div>

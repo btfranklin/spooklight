@@ -1,0 +1,13 @@
+{% with cover_status=world.latest_cover %}
+    <div id="world-cover-status"
+         {% if cover_status and cover_status.ai_task and cover_status.ai_task.is_active %}hx-get="{% url 'worlds:cover_status' world.slug %}" hx-trigger="load delay:1s, every 2s" hx-target="#world-cover-status" hx-swap="outerHTML"{% endif %}>
+        {% if cover_status and cover_status.ai_task and cover_status.ai_task.is_active %}
+            <div class="flex items-center gap-3 text-sm text-base-content/70">
+                <span class="loading loading-spinner loading-sm" aria-hidden="true"></span>
+                <span>Generating cover</span>
+            </div>
+        {% elif cover_status and cover_status.error_message %}
+            <p class="text-sm text-error">{{ cover_status.error_message }}</p>
+        {% endif %}
+    </div>
+{% endwith %}

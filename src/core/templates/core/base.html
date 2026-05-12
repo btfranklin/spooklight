@@ -1,4 +1,4 @@
-{% load static %}
+{% load static django_htmx %}
 <!DOCTYPE html>
 <html lang="en" data-theme="spooklight">
     <head>
@@ -17,7 +17,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Sora:wght@300;400;500;600;700&display=swap"
               rel="stylesheet">
+        <link rel="icon" href="{% static 'images/wisp-icon.png' %}">
         <link rel="stylesheet" href="{% static 'css/app.css' %}">
+        <meta name="htmx-config" content='{"includeIndicatorStyles": false}'>
+        {% htmx_script %}
     </head>
     <body class="min-h-screen bg-base-100 text-base-content">
         <div class="relative min-h-screen overflow-hidden bg-emberfield">
@@ -63,12 +66,8 @@
                 {% block content %}
                 {% endblock content %}
             </main>
-            <footer class="relative z-10 border-t border-base-200/70 bg-base-100/70">
-                <div class="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-sm text-base-content/70 md:flex-row md:items-center md:justify-between">
-                    <span>Build worlds. Keep them yours.</span>
-                    <span>Spooklight is a private, user-owned creative workspace.</span>
-                </div>
-            </footer>
+            {% block footer %}
+            {% endblock footer %}
         </div>
     </body>
 </html>

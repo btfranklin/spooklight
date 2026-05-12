@@ -19,14 +19,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_htmx",
+    "django_rq",
+    "django_tasks_rq",
+    "ai_tasks",
     "core",
     "worlds",
+    "world_artifacts",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -115,3 +121,28 @@ MEDIA_ROOT = BASE_DIR / "media"
 LOGIN_URL = "core:landing"
 LOGIN_REDIRECT_URL = "core:dashboard"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REDIS_URL = os.environ.get("REDIS_URL", "redis://127.0.0.1:6379/0")
+RQ_QUEUES = {
+    "ai": {
+        "URL": REDIS_URL,
+        "DEFAULT_TIMEOUT": int(os.environ.get("AI_TASK_TIMEOUT_SECONDS", "900")),
+        "DEFAULT_RESULT_TTL": int(os.environ.get("AI_TASK_RESULT_TTL_SECONDS", "3600")),
+    }
+}
+RQ_SHOW_ADMIN_LINK = False
+TASKS = {
+    "default": {
+        "BACKEND": os.environ.get(
+            "DJANGO_TASKS_BACKEND",
+            "django_tasks_rq.RQBackend",
+        ),
+        "QUEUES": ["ai"],
+    }
+}
+
+AI_TASK_LEASE_SECONDS = int(os.environ.get("AI_TASK_LEASE_SECONDS", "900"))
+AI_TASK_RETRY_DELAY_SECONDS = int(os.environ.get("AI_TASK_RETRY_DELAY_SECONDS", "30"))
+AI_WORKER_HEARTBEAT_MAX_AGE_SECONDS = int(
+    os.environ.get("AI_WORKER_HEARTBEAT_MAX_AGE_SECONDS", "120")
+)

@@ -8,6 +8,8 @@ from django.db import transaction
 from django.utils.text import slugify
 from openai import OpenAI
 
+from ai_tasks.models import AITask
+from ai_tasks.services import fail_ai_task, mark_provider_started, succeed_ai_task
 from worlds.models import World, WorldCoverImage
 
 WORLD_COVER_MODEL = "gpt-image-2"
@@ -68,8 +70,8 @@ def request_world_cover_image(prompt: str) -> bytes:
     return base64.b64decode(image_base64)
 
 
-def generate_cover_image(cover_id: int) -> None:
-    cover = WorldCoverImage.objects.select_related("world").get(id=cover_id)
+def process_world_cover_generation_task(task: AITask) -> None:
+    cover = WorldCoverImage.objects.select_related("world").get(ai_task=task)
     prompt = cover.prompt or build_world_cover_prompt(cover.world)
     cover.prompt = prompt
     cover.model_id = WORLD_COVER_MODEL
@@ -80,11 +82,15 @@ def generate_cover_image(cover_id: int) -> None:
     )
 
     try:
+        if not os.environ.get("OPENAI_API_KEY"):
+            raise RuntimeError("OPENAI_API_KEY is not configured.")
+        mark_provider_started(task, provider_model=WORLD_COVER_MODEL)
         image_bytes = request_world_cover_image(prompt)
     except Exception as exc:
         cover.status = WorldCoverImage.Status.FAILED
         cover.error_message = str(exc)
         cover.save(update_fields=["status", "error_message", "updated_at"])
+        fail_ai_task(task, str(exc))
         return
 
     with transaction.atomic():
@@ -108,3 +114,16 @@ def generate_cover_image(cover_id: int) -> None:
                 "updated_at",
             ]
         )
+    succeed_ai_task(
+        task,
+        result_payload={"cover_id": cover.id, "image": cover.image.name},
+    )
+
+
+def generate_cover_image(cover_id: int) -> None:
+    cover = WorldCoverImage.objects.select_related("world", "world__owner").get(
+        id=cover_id
+    )
+    if cover.ai_task_id is None:
+        raise RuntimeError("Cover image does not have an AI task.")
+    process_world_cover_generation_task(cover.ai_task)

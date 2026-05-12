@@ -23,6 +23,7 @@ Do not add extra text or exposition to UI elements. UI elements should be minima
 - World cards should feel like windows into worlds: image-led, large, and atmospheric.
 - Use image backgrounds when they represent real world state or accepted/generated artifacts.
 - Use restrained overlays only to preserve text readability.
+- Use `$integrate-daisyui-into-django` when changing DaisyUI/Tailwind setup, custom theme tokens, reusable component patterns, or when a DaisyUI component does not render as expected.
 - Do not add decorative badges, pills, chips, labels, or tag-like UI unless the user specifically requests them.
 - In particular, do not add badges for genre, status, or empty-state markers such as "Riverpunk" or "No cover yet" by default.
 - If metadata is useful, render it as normal text, a definition list, or a compact metadata row.
@@ -41,6 +42,8 @@ Do not add extra text or exposition to UI elements. UI elements should be minima
 - Keep form fields close to the concepts users are authoring.
 - Prefer explicit labels and helper text over clever phrasing.
 - For destructive or externally visible actions, require a clear user action and confirmation where appropriate.
+- For AI tasks, show a small spinner while work is queued or running and poll an owner-scoped status fragment until the task reaches a terminal state.
+- Do not expose queue internals, worker names, task IDs, or provider IDs in normal product UI unless specifically requested.
 
 ## Validation
 
@@ -49,7 +52,10 @@ After UI changes, run:
 ```sh
 pdm run lint
 npm run build:css
+docker compose up -d --build
 ```
+
+Rebuild the Docker containers after UI changes so template and asset changes are picked up by the running preview stack.
 
 For behavior-changing UI, also run:
 

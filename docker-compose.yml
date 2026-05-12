@@ -15,6 +15,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
+  redis:
+    image: redis:8
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - redis_data:/data
+
   web:
     build: .
     command: sh /app/spooklight/docker/web-entrypoint.sh
@@ -23,16 +34,44 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       DJANGO_DEBUG: "1"
       DJANGO_SECRET_KEY: "dev-secret-key"
       DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
       DATABASE_URL: "postgresql://spooklight:spooklight@db:5432/spooklight"
+      REDIS_URL: "redis://redis:6379/0"
     ports:
       - "8001:8000"
     volumes:
       - media_data:/app/spooklight/media
 
+  worker:
+    build: .
+    command: sh /app/spooklight/docker/worker-entrypoint.sh
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DJANGO_DEBUG: "1"
+      DJANGO_SECRET_KEY: "dev-secret-key"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      DATABASE_URL: "postgresql://spooklight:spooklight@db:5432/spooklight"
+      REDIS_URL: "redis://redis:6379/0"
+    healthcheck:
+      test: ["CMD-SHELL", "pdm run python src/manage.py check_ai_worker_health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - media_data:/app/spooklight/media
+
 volumes:
   postgres_data:
+  redis_data:
   media_data:
